@@ -28,13 +28,11 @@ return topicsWrapper;
 }
 import axios from "axios";
 const tabsAppender = (selector) => {
-  let dataSet = [];
   axios.get('http://localhost:5001/api/topics')
     .then(resp=> {
       document.querySelector(selector).appendChild(Tabs(resp.data['topics']));
     })
     .catch(err => console.error(err))
-
   // TASK 4
   // ---------------------
   // Implement this function which takes a css selector as its only argument.

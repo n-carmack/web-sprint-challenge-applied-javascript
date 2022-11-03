@@ -1,4 +1,32 @@
 const Card = (article) => {
+  const cardWrapper = document.createElement('div');
+  cardWrapper.classList.add('card');
+
+  const headlineSection = document.createElement('div');
+  headlineSection.classList.add('headline');
+  headlineSection.textContent = article['headline'];
+
+  const authorSection = document.createElement('div');
+  authorSection.classList.add('author');
+
+  const imgContainerSection = document.createElement('div');
+  imgContainerSection.classList.add('img-container');
+
+  const imgItem = document.createElement('img');
+  imgItem.src = article['authorPhoto'];
+
+  const authorNameSection = document.createElement('span');
+  authorNameSection.textContent = article['authorName'];
+
+  imgContainerSection.appendChild(imgItem);
+  authorSection.appendChild(imgContainerSection);
+  authorSection.appendChild(authorNameSection);
+  cardWrapper.appendChild(headlineSection);
+  cardWrapper.appendChild(authorSection);
+
+return cardWrapper;
+
+
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -19,7 +47,21 @@ const Card = (article) => {
   //
 }
 
+import axios from "axios";
+
 const cardAppender = (selector) => {
+ let articleListing =['bootstrap', 'javascript', 'jquery', 'node', 'technology'];
+  axios.get('http://localhost:5001/api/articles')
+    .then(resp=> {
+      for(let i = 0; i< articleListing.length; i++){
+        let previousCount = i;
+        for(let i = 0; i< resp.data['articles'][articleListing[previousCount]].length; i++){
+          document.querySelector(selector).appendChild(Card(resp.data['articles'][articleListing[previousCount]][i]))
+        }
+      }
+    })
+    .catch(err => console.error(err));
+
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
